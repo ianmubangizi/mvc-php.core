@@ -1,0 +1,23 @@
+{
+  "name": "ianmubangizi/php-mvc",
+  "description": "This a base project using the MVC model in PHP",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ian Mubangizi",
+      "email": "io@ianmubangizi.com"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "require": {
+    "ext-pdo": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.2"
+  }
+}
