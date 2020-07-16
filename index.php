@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
+require_once './vendor/autoload.php';
+require_once './functions.php';
+require_once './routes.php';
 
-<body>
-    <h1>Index PHP</h1>
-</body>
-
-</html>
+$app = new Mubangizi\Application;
+$app->run();
