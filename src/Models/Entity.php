@@ -16,7 +16,6 @@ abstract class Entity
             $this->id = $id;
         }
         $this->table = $table_name;
-        $this->conn = Database::make_connection();
     }
 
     public function id_or_default($id)
@@ -29,7 +28,7 @@ abstract class Entity
         return Database::make_connection()->exec("DELETE FROM $this->table  WHERE id = $id;");
     }
 
-    public function select($statement)
+    public function query($statement)
     {
         return Database::make_connection()->query($statement)->fetchAll(PDO::FETCH_CLASS);
     }
