@@ -21,4 +21,17 @@ class Page
         self::$data = $data;
         require_once 'src/Layouts/main.php';
     }
+
+    public static function get_data(){
+        return self::$data;
+    }
+
+    public static function get_content(){
+        return self::$file;
+    }
+
+    public static function get_links(){
+        return self::$links;
+    }
+
 }
