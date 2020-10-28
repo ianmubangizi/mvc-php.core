@@ -2,14 +2,52 @@
 
 namespace Mubangizi;
 
+use Mubangizi\Views\Page;
+
 class Application
 {
 
-    private $router;
+    public $user;
+    public $name;
+    public $page;
+    public $alert;
+    public $toast;
+    public $router;
 
-    function __construct()
+    public static $paths = array(
+        'views' => __DIR__ . '\Views\\',
+        'pages' => __DIR__ . '\Views\Pages\\',
+        'layouts' => __DIR__ . '\Layouts\\',
+        'includes' => __DIR__ . '\Layouts\includes\\',
+        'partials' => __DIR__ . '\Layouts\includes\partials\\',
+        'forms' => __DIR__ . '\Layouts\includes\partials\forms\\'
+    );
+
+    public $gateway;
+    private static $instances = array();
+
+
+    protected function __construct()
     {
-        $this->router = new Route;
+        session_start();
+
+        $this->name = isset($_ENV['SITE_NAME']) ? $_ENV['SITE_NAME'] : '';
+        $this->user = get_user();
+        $this->router = new Route();
+        $this->page = new Page(view('index'));
+    }
+
+    protected function __clone()
+    {
+    }
+
+    public static function instance(): Application
+    {
+        $cls = get_called_class();
+        if (!isset(self::$instances[$cls])) {
+            self::$instances[$cls] = new static;
+        }
+        return self::$instances[$cls];
     }
 
     public function run()
@@ -25,10 +63,17 @@ class Application
 
     private function handle($request)
     {
-        list('name' => $view, 'action' => $action) = $this->router->find($request['url']);
+        list('args' => $args, 'name' => $view, 'action' => $action) = $this->router->find($request['method'], $request['url']);
 
-        list(0 => $class, 1 => $method) = explode('@', rtrim($action));
+        if (is_string($action)) {
+            list(0 => $class, 1 => $function) = explode('@', rtrim($action));
 
-        if (method_exists($class, $method)) (new $class)->$method($view, $request);
+            if (method_exists($class, $function)) (new $class())->$function($view, $request);
+        } elseif (!$args) {
+            call_user_func($action, $view, $request);
+        } else {
+            $__args = explode(',', $args);
+            call_user_func($action, ...$__args);
+        }
     }
 }

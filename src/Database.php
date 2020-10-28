@@ -6,17 +6,11 @@ use PDO;
 
 abstract class Database
 {
-    protected static $user = 'root';
-    protected static $pass = 'root';
-    protected static $port = '3306';
-    protected static $type = 'mysql';
-    protected static $host = 'localhost';
-    protected static $name = 'database';
 
     public static function make_connection()
     {
-        $dsn = self::$type . ':host=' . self::$host . ';dbname=' . self::$name . ';charset=utf8';
-        $pdo = new PDO($dsn, self::$user, self::$pass);
+        $dsn = $_ENV['DB_TYPE'] . ':host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';charset=utf8';
+        $pdo = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS']);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     }

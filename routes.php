@@ -1,7 +1,7 @@
 <?php
 
-use Mubangizi\Route;
+// App Routes
+require_once('src/Routes/Index.php');
 
-Route::add('/', 'index');
-Route::add('/server-error', '500');
-Route::add('/page-not-found', '404');
+// Api Routes
+require_once('src/Routes/Api/Ajax.php');

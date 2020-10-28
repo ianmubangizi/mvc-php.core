@@ -5,33 +5,52 @@ namespace Mubangizi\Views;
 class Page
 {
 
-    public static $links;
-    public static $data;
-    public static $file;
+    public $data;
+    public $view;
+    public $title;
 
-    public static function render($name, $data = [])
+    public function __construct($view = '', $data = [], $title = '')
     {
+        $this->view = $view;
+        $this->data = $data;
+        $this->title = $title;
+    }
 
-        if (file_exists("src/Views/$name.php")) {
-            self::$file = "src/Views/$name.php";
+    public function render(Page $page)
+    {
+        $this->data = $page->data;
+        $this->title = $page->title;
+        $this->set_view(
+            view($page->view),
+            view($page->view, 'views')
+        );
+        require_once layouts('base', 'includes');
+    }
+
+    function crumb($name, $array)
+    {
+        $this->data['breadcrumbs'][$name] = $array;
+    }
+
+    function title($title)
+    {
+        $this->title = $title;
+    }
+
+    function remove_alert()
+    {
+        $this->data['alert'] = null;
+        echo json_encode(array("message" => 'Alert removed'));
+    }
+
+    public function set_view($__page, $__view)
+    {
+        if (file_exists($__page)) {
+            $this->view = $__page;
+        } elseif (file_exists($__view)) {
+            $this->view = $__view;
         } else {
-            self::$file = "src/Views/500.php";
+            $this->view = view('server-error');
         }
-
-        self::$data = $data;
-        require_once 'src/Layouts/main.php';
     }
-
-    public static function get_data(){
-        return self::$data;
-    }
-
-    public static function get_content(){
-        return self::$file;
-    }
-
-    public static function get_links(){
-        return self::$links;
-    }
-
 }

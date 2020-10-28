@@ -15,9 +15,13 @@
     }
   },
   "require": {
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "ext-fileinfo": "*",
+    "vlucas/phpdotenv": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.2"
+    "ext-curl": "*",
+    "phpunit/phpunit": "*"
   }
 }
